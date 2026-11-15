@@ -1,0 +1,645 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FC PLAYER LAB</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #080e18;
+    color: #f2f5f8;
+    padding: 25px;
+}
+
+.container {
+    max-width: 1250px;
+    margin: auto;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    color: #b5f542;
+    font-size: 36px;
+    letter-spacing: 3px;
+}
+
+header p {
+    color: #8e9aab;
+    margin-top: 8px;
+}
+
+.panel {
+    background: #111c2c;
+    border: 1px solid #26364b;
+    border-radius: 12px;
+    padding: 22px;
+    margin-bottom: 20px;
+}
+
+.panel h2 {
+    color: #b5f542;
+    font-size: 19px;
+    margin-bottom: 18px;
+}
+
+.player-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+label {
+    display: block;
+    color: #aab7c8;
+    font-size: 13px;
+    margin-bottom: 7px;
+}
+
+input, select {
+    width: 100%;
+    background: #0a1422;
+    color: white;
+    border: 1px solid #34465e;
+    border-radius: 6px;
+    padding: 11px;
+    outline: none;
+}
+
+input:focus, select:focus {
+    border-color: #b5f542;
+}
+
+select option {
+    background: #111c2c;
+}
+
+.result {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 20px;
+    align-items: center;
+}
+
+.ovr-box {
+    background: linear-gradient(145deg, #263d24, #101d18);
+    border: 1px solid #b5f542;
+    border-radius: 12px;
+    padding: 22px;
+    text-align: center;
+}
+
+.ovr-box small {
+    color: #b5f542;
+    letter-spacing: 2px;
+}
+
+.ovr {
+    font-size: 55px;
+    font-weight: bold;
+    color: #b5f542;
+    margin: 8px 0;
+}
+
+.position-name {
+    color: #d3e8ae;
+    font-weight: bold;
+}
+
+.result-details {
+    color: #aab7c8;
+    line-height: 1.8;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 15px;
+}
+
+.stat-item {
+    background: #0b1523;
+    border: 1px solid #26364b;
+    padding: 13px;
+    border-radius: 8px;
+}
+
+.stat-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.stat-name {
+    font-size: 13px;
+    color: #dce5ef;
+}
+
+.stat-value {
+    width: 60px;
+    text-align: center;
+    padding: 6px;
+    font-weight: bold;
+    color: #b5f542;
+}
+
+input[type="range"] {
+    padding: 0;
+    height: 5px;
+    accent-color: #b5f542;
+    cursor: pointer;
+}
+
+.buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+button {
+    border: none;
+    border-radius: 7px;
+    padding: 12px 22px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.primary {
+    background: #b5f542;
+    color: #101b0b;
+}
+
+.secondary {
+    background: #26364b;
+    color: white;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+.hidden {
+    display: none;
+}
+
+.note {
+    color: #7f91a8;
+    font-size: 12px;
+    margin-top: 12px;
+    line-height: 1.5;
+}
+
+@media(max-width: 600px) {
+    body { padding: 12px; }
+    header h1 { font-size: 27px; }
+    .result { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+    <h1>FC PLAYER LAB</h1>
+    <p>FOOTBALL PLAYER RATING SIMULATOR</p>
+</header>
+
+<section class="panel">
+    <h2>THÔNG TIN CẦU THỦ</h2>
+
+    <div class="player-info">
+        <div>
+            <label>Tên cầu thủ</label>
+            <input id="playerName" value="Cầu thủ của tôi">
+        </div>
+
+        <div>
+            <label>Chân thuận</label>
+            <select id="foot">
+                <option>Phải</option>
+                <option>Trái</option>
+                <option>Hai chân</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Vị trí thi đấu</label>
+            <select id="position">
+                <option value="ST">ST - Tiền đạo cắm</option>
+                <option value="CF">CF - Hộ công</option>
+                <option value="LW">LW - Tiền đạo trái</option>
+                <option value="RW">RW - Tiền đạo phải</option>
+                <option value="CAM">CAM - Tiền vệ tấn công</option>
+                <option value="CM">CM - Tiền vệ trung tâm</option>
+                <option value="CDM">CDM - Tiền vệ phòng ngự</option>
+                <option value="CB">CB - Trung vệ</option>
+                <option value="LB">LB - Hậu vệ trái</option>
+                <option value="RB">RB - Hậu vệ phải</option>
+                <option value="GK">GK - Thủ môn</option>
+            </select>
+        </div>
+    </div>
+</section>
+
+<section class="panel">
+    <div class="result">
+        <div class="ovr-box">
+            <small>OVERALL</small>
+            <div class="ovr" id="ovr">--</div>
+            <div class="position-name" id="ovrPosition">ST</div>
+        </div>
+
+        <div class="result-details">
+            <div> <strong id="displayName">Cầu thủ của tôi</strong> </div>
+            <div>Chân thuận: <span id="displayFoot">Phải</span></div>
+            <div>Vị trí: <span id="displayPosition">ST</span></div>
+            <div>Đánh giá: <span id="evaluation">Đang tính toán...</span></div>
+            <div class="note">OVR là chỉ số mô phỏng dựa trên trọng số từng vị trí, không phải công thức chính thức của FC Online.</div>
+        </div>
+    </div>
+</section>
+
+<section class="panel" id="outfieldPanel">
+    <h2>CHỈ SỐ CẦU THỦ NGOÀI SÂN</h2>
+    <div class="stats-grid" id="outfieldStats"></div>
+</section>
+
+<section class="panel hidden" id="gkPanel">
+    <h2>CHỈ SỐ THỦ MÔN</h2>
+    <div class="stats-grid" id="gkStats"></div>
+</section>
+
+<div class="buttons">
+    <button class="primary" onclick="copyPlayer()">SAO CHÉP THÔNG TIN</button>
+    <button class="secondary" onclick="resetStats()">ĐẶT LẠI CHỈ SỐ</button>
+</div>
+
+</div>
+
+<script>
+const attributes = {
+    "Tốc độ": "speed",
+    "Tăng tốc": "acceleration",
+    "Dứt điểm": "finishing",
+    "Lực sút": "shotPower",
+    "Sút xa": "longShots",
+    "Chạy chỗ": "positioning",
+    "Vô lê": "volleys",
+    "Penalty": "penalties",
+
+    "Chuyền ngắn": "shortPass",
+    "Tầm nhìn": "vision",
+    "Tạt bóng": "crossing",
+    "Chuyền dài": "longPass",
+    "Đá phạt": "freeKick",
+    "Sút xoáy": "curve",
+
+    "Rê bóng": "dribbling",
+    "Giữ bóng": "ballControl",
+    "Xoay sở": "agility",
+    "Thăng bằng": "balance",
+    "Phản ứng": "reactions",
+
+    "Kèm người": "marking",
+    "Cắt bóng": "interceptions",
+    "Cắt bóng đứng": "standingTackle",
+    "Đánh đầu": "heading",
+    "Đòn trượt": "slidingTackle",
+
+    "Sức mạnh": "strength",
+    "Sự bền bỉ": "stamina",
+    "Sự hung hăng": "aggression",
+    "Nhảy": "jumping",
+    "Sự điềm tĩnh": "composure"
+};
+
+const goalkeeperAttributes = {
+    "GK Diving": "gkDiving",
+    "Xử lý GK": "gkHandling",
+    "Thủ môn đá phạt": "gkKicking",
+    "Phản xạ GK": "gkReflexes",
+    "Định vị GK": "gkPositioning"
+};
+
+const defaultStats = {};
+const defaultGK = {};
+
+Object.values(attributes).forEach(key => defaultStats[key] = 85);
+Object.values(goalkeeperAttributes).forEach(key => defaultGK[key] = 85);
+
+let stats = {...defaultStats};
+let gkStats = {...defaultGK};
+
+function createStatElement(name, key, isGK = false) {
+    const value = isGK ? gkStats[key] : stats[key];
+
+    return `
+    <div class="stat-item">
+        <div class="stat-top">
+            <span class="stat-name">${name}</span>
+            <input class="stat-value" type="number"
+                min="1" max="150" value="${value}"
+                id="number-${key}"
+                oninput="updateStat('${key}', this.value, ${isGK})">
+        </div>
+
+        <input type="range" min="1" max="150"
+            value="${value}" id="range-${key}"
+            oninput="updateStat('${key}', this.value, ${isGK})">
+    </div>`;
+}
+
+function renderStats() {
+    document.getElementById("outfieldStats").innerHTML =
+        Object.entries(attributes)
+        .map(([name, key]) => createStatElement(name, key))
+        .join("");
+
+    document.getElementById("gkStats").innerHTML =
+        Object.entries(goalkeeperAttributes)
+        .map(([name, key]) => createStatElement(name, key, true))
+        .join("");
+}
+
+function updateStat(key, value, isGK) {
+    let number = Math.max(1, Math.min(150, Number(value) || 1));
+
+    if (isGK) {
+        gkStats[key] = number;
+    } else {
+        stats[key] = number;
+    }
+
+    const numberInput = document.getElementById("number-" + key);
+    const rangeInput = document.getElementById("range-" + key);
+
+    if (numberInput) numberInput.value = number;
+    if (rangeInput) rangeInput.value = number;
+
+    calculateOVR();
+}
+
+// Trọng số mô phỏng cho từng vị trí.
+// Các trọng số trong mỗi vị trí sẽ được chuẩn hóa khi tính OVR.
+const weights = {
+    ST: {
+        speed: 0.10, acceleration: 0.08,
+        finishing: 0.16, shotPower: 0.08,
+        longShots: 0.04, positioning: 0.14,
+        volleys: 0.05, penalties: 0.02,
+        shortPass: 0.03, vision: 0.02,
+        crossing: 0.01, longPass: 0.01,
+        freeKick: 0.01, curve: 0.02,
+        dribbling: 0.06, ballControl: 0.04,
+        agility: 0.03, balance: 0.02,
+        reactions: 0.04, heading: 0.03,
+        strength: 0.04
+    },
+
+    CF: {
+        speed: 0.06, acceleration: 0.06,
+        finishing: 0.13, shotPower: 0.06,
+        longShots: 0.05, positioning: 0.11,
+        volleys: 0.04, penalties: 0.02,
+        shortPass: 0.07, vision: 0.07,
+        crossing: 0.02, longPass: 0.02,
+        freeKick: 0.02, curve: 0.03,
+        dribbling: 0.07, ballControl: 0.06,
+        agility: 0.03, balance: 0.02,
+        reactions: 0.05, composure: 0.04
+    },
+
+    LW: {
+        speed: 0.13, acceleration: 0.12,
+        finishing: 0.08, shotPower: 0.04,
+        longShots: 0.04, positioning: 0.05,
+        crossing: 0.09, vision: 0.04,
+        shortPass: 0.04, longPass: 0.02,
+        curve: 0.04, dribbling: 0.12,
+        ballControl: 0.09, agility: 0.07,
+        balance: 0.04, reactions: 0.03,
+        stamina: 0.04, composure: 0.02
+    },
+
+    RW: {
+        speed: 0.13, acceleration: 0.12,
+        finishing: 0.08, shotPower: 0.04,
+        longShots: 0.04, positioning: 0.05,
+        crossing: 0.09, vision: 0.04,
+        shortPass: 0.04, longPass: 0.02,
+        curve: 0.04, dribbling: 0.12,
+        ballControl: 0.09, agility: 0.07,
+        balance: 0.04, reactions: 0.03,
+        stamina: 0.04, composure: 0.02
+    },
+
+    CAM: {
+        speed: 0.04, acceleration: 0.04,
+        finishing: 0.07, longShots: 0.06,
+        positioning: 0.05, shotPower: 0.03,
+        shortPass: 0.13, vision: 0.14,
+        crossing: 0.04, longPass: 0.08,
+        freeKick: 0.04, curve: 0.04,
+        dribbling: 0.08, ballControl: 0.08,
+        agility: 0.04, balance: 0.03,
+        reactions: 0.04, composure: 0.03
+    },
+
+    CM: {
+        speed: 0.04, acceleration: 0.03,
+        finishing: 0.03, longShots: 0.04,
+        positioning: 0.04, shortPass: 0.14,
+        vision: 0.11, crossing: 0.04,
+        longPass: 0.11, freeKick: 0.02,
+        curve: 0.02, dribbling: 0.06,
+        ballControl: 0.08, agility: 0.03,
+        balance: 0.03, reactions: 0.06,
+        marking: 0.04, interceptions: 0.04,
+        standingTackle: 0.04, stamina: 0.04,
+        composure: 0.03
+    },
+
+    CDM: {
+        speed: 0.03, acceleration: 0.03,
+        shortPass: 0.10, vision: 0.06,
+        longPass: 0.10, ballControl: 0.05,
+        reactions: 0.08, marking: 0.12,
+        interceptions: 0.12, standingTackle: 0.11,
+        slidingTackle: 0.05, strength: 0.06,
+        stamina: 0.05, aggression: 0.02,
+        jumping: 0.01, composure: 0.01
+    },
+
+    CB: {
+        speed: 0.06, acceleration: 0.03,
+        reactions: 0.09, marking: 0.14,
+        interceptions: 0.13, standingTackle: 0.14,
+        slidingTackle: 0.09, heading: 0.09,
+        strength: 0.09, jumping: 0.06,
+        aggression: 0.02, stamina: 0.02,
+        composure: 0.03
+    },
+
+    LB: {
+        speed: 0.12, acceleration: 0.10,
+        crossing: 0.09, shortPass: 0.05,
+        longPass: 0.05, vision: 0.03,
+        dribbling: 0.05, ballControl: 0.04,
+        agility: 0.04, stamina: 0.08,
+        reactions: 0.05, marking: 0.09,
+        interceptions: 0.08, standingTackle: 0.08,
+        slidingTackle: 0.04, strength: 0.03,
+        jumping: 0.01, composure: 0.02
+    },
+
+    RB: {
+        speed: 0.12, acceleration: 0.10,
+        crossing: 0.09, shortPass: 0.05,
+        longPass: 0.05, vision: 0.03,
+        dribbling: 0.05, ballControl: 0.04,
+        agility: 0.04, stamina: 0.08,
+        reactions: 0.05, marking: 0.09,
+        interceptions: 0.08, standingTackle: 0.08,
+        slidingTackle: 0.04, strength: 0.03,
+        jumping: 0.01, composure: 0.02
+    }
+};
+
+function calculateWeightedOVR(attributeValues, positionWeights) {
+    let total = 0;
+    let totalWeight = 0;
+
+    for (const [key, weight] of Object.entries(positionWeights)) {
+        total += (attributeValues[key] || 85) * weight;
+        totalWeight += weight;
+    }
+
+    return Math.round(total / totalWeight);
+}
+
+function calculateOVR() {
+    const position = document.getElementById("position").value;
+    let ovr;
+
+    if (position === "GK") {
+        ovr = calculateWeightedOVR(gkStats, {
+            gkDiving: 0.23,
+            gkHandling: 0.20,
+            gkKicking: 0.12,
+            gkReflexes: 0.25,
+            gkPositioning: 0.20
+        });
+    } else {
+        ovr = calculateWeightedOVR(stats, weights[position]);
+    }
+
+    document.getElementById("ovr").textContent = ovr;
+    document.getElementById("ovrPosition").textContent = position;
+    document.getElementById("displayPosition").textContent = position;
+
+    let evaluation = "";
+
+    if (ovr >= 140) evaluation = "Siêu cầu thủ";
+    else if (ovr >= 130) evaluation = "Đẳng cấp thế giới";
+    else if (ovr >= 120) evaluation = "Xuất sắc";
+    else if (ovr >= 110) evaluation = "Rất tốt";
+    else if (ovr >= 100) evaluation = "Khá tốt";
+    else if (ovr >= 85) evaluation = "Trung bình";
+    else evaluation = "Cần cải thiện";
+
+    document.getElementById("evaluation").textContent = evaluation;
+}
+
+function updatePlayerInfo() {
+    document.getElementById("displayName").textContent =
+        document.getElementById("playerName").value;
+
+    document.getElementById("displayFoot").textContent =
+        document.getElementById("foot").value;
+
+    document.getElementById("outfieldPanel").classList.toggle(
+        "hidden",
+        document.getElementById("position").value === "GK"
+    );
+
+    document.getElementById("gkPanel").classList.toggle(
+        "hidden",
+        document.getElementById("position").value !== "GK"
+    );
+
+    calculateOVR();
+}
+
+function resetStats() {
+    stats = {...defaultStats};
+    gkStats = {...defaultGK};
+
+    renderStats();
+    calculateOVR();
+}
+
+function copyPlayer() {
+    const position = document.getElementById("position").value;
+
+    let content = `CẦU THỦ: ${document.getElementById("playerName").value}
+CHÂN THUẬN: ${document.getElementById("foot").value}
+VỊ TRÍ: ${position}
+OVR: ${document.getElementById("ovr").textContent}
+
+`;
+
+    if (position === "GK") {
+        for (const [name, key] of Object.entries(goalkeeperAttributes)) {
+            content += `${name}: ${gkStats[key]}\n`;
+        }
+    } else {
+        for (const [name, key] of Object.entries(attributes)) {
+            content += `${name}: ${stats[key]}\n`;
+        }
+    }
+
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(content)
+            .then(() => alert("Đã sao chép thông tin cầu thủ!"))
+            .catch(() => fallbackCopy(content));
+    } else {
+        fallbackCopy(content);
+    }
+}
+
+function fallbackCopy(content) {
+    const textarea = document.createElement("textarea");
+    textarea.value = content;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand("copy");
+    textarea.remove();
+    alert("Đã sao chép thông tin cầu thủ!");
+}
+
+document.getElementById("position").addEventListener("change", updatePlayerInfo);
+document.getElementById("playerName").addEventListener("input", updatePlayerInfo);
+document.getElementById("foot").addEventListener("change", updatePlayerInfo);
+
+renderStats();
+updatePlayerInfo();
+</script>
+</body>
+</html>
